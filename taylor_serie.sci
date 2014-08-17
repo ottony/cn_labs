@@ -41,7 +41,7 @@ endfunction
 
 // ploting
 
-function [results, errors, real_results] = plot_taylor_analysis(angle, range_terms)
+function plot_taylor_analysis(angle, range_terms)
   for i = range_terms
     [results(i), errors(i), real_results(i)] = sin_taylor(angle, i)
   end
@@ -49,4 +49,9 @@ function [results, errors, real_results] = plot_taylor_analysis(angle, range_ter
   plot2d(range_terms, [results, real_results, errors], [-10, 2, 5]);
   legends(["Resultado", "Valor esperado", "Error"], [-10, 2, 5], opt='lr');
 
+endfunction
+
+function run_taylor_sample
+  disp("Série de Taylo para seno x = %pi/2 e termos de 1 à 10");
+  plot_taylor_analysis(%pi/2, 1:10);
 endfunction
