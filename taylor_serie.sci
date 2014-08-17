@@ -4,7 +4,7 @@ endfunction
 
 // sin(x) = (-1)^i * ( x^(2i + 1)/ (2i + 1)! )
 
-function [relative_sin, real_sin, relative_error] = sin_taylor(angle, terms)
+function [relative_sin, relative_error, real_sin] = sin_taylor(angle, terms)
   real_sin = sin(angle);
   relative_sin = 0;
 
@@ -21,7 +21,7 @@ endfunction
 
 // suggested by the teacher
 
-function [relative_sin, real_sin, relative_error] = sin_taylor_suggested(angle, terms)
+function [relative_sin, relative_error, real_sin] = sin_taylor_suggested(angle, terms)
   real_sin = sin(angle);
   relative_sin = angle;
   stoped_point = 3 + 2*(terms - 1)
@@ -40,3 +40,13 @@ function [relative_sin, real_sin, relative_error] = sin_taylor_suggested(angle, 
 endfunction
 
 // ploting
+
+function [results, errors, real_results] = plot_taylor_analysis(angle, range_terms)
+  for i = range_terms
+    [results(i), errors(i), real_results(i)] = sin_taylor(angle, i)
+  end
+
+  plot2d(range_terms, [results, real_results, errors], [-10, 2, 5]);
+  legends(["Resultado", "Valor esperado", "Error"], [-10, 2, 5], opt='lr');
+
+endfunction
