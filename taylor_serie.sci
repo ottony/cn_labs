@@ -39,6 +39,23 @@ function [relative_sin, relative_error, real_sin] = sin_taylor_suggested(angle, 
   relative_error = calc_error(real_sin, relative_sin);
 endfunction
 
+function [relative_sin, terms, real_sin] = sin_t(angle, precision)
+  real_sin = sin(angle);
+  relative_sin = angle;
+  i = 1;
+
+  while(abs(relative_sin - real_sin) > 10^-precision)
+    signal = (-1)^i;
+    n = 2*i + 1;
+
+    term = angle^n / factorial(n);
+    relative_sin = relative_sin + signal*term;
+    i = i + 1;
+  end
+
+  terms = i;
+endfunction
+
 // ploting
 
 function plot_taylor_analysis(angle, range_terms)
