@@ -15,9 +15,29 @@ function [x, root] = newton_root(Function, x, precision, max_loop)
       break;
     end
 
-    angular_coeficient = derivative(Function, x)
+    angular_coeficient = numderivative(Function, x)
 
     // when tangent touch "x" axis
+    x = x - Function(x) / angular_coeficient;
+  end
+endfunction
+
+function [x, root] = secant_root(Function, x, precision, max_loop)
+  //set default value
+  if ~exists('max_loop', 'local') then
+    max_loop = 10;
+  end
+
+  // starting x1 with increased precision value
+  x1 = x + 10^-precision;
+
+  for i = 1:max_loop
+    if are_precise(Function, x, precision)  then
+      break;
+    end
+
+    angular_coeficient = (Function(x1) - Function(x)) / ( x1 - x );
+    x1 = x;
     x = x - Function(x) / angular_coeficient;
   end
 endfunction
