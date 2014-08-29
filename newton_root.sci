@@ -4,7 +4,7 @@ function precise = are_precise(Function, x, precision)
 endfunction
 
 function [x, root] = newton_root(Function, x, precision, max_loop)
-  //default value
+  //set default value
   if ~exists('max_loop', 'local') then
     max_loop = 10;
   end
