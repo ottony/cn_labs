@@ -1,17 +1,18 @@
-function precise = are_precise(Function, x, precision)
+function precise = is_precise(Function, x, precision)
   // Example: |Y| < 10^-3
   precise = abs(Function(x)) < ( 10^-precision );
 endfunction
 
+// Find root value with newton method
 function [x, root] = newton_root(Function, x, precision, max_loop)
-  //set default value
+  // set default value
   if ~exists('max_loop', 'local') then
     max_loop = 10;
   end
 
   for i = 1:max_loop
     // checks accuracy and stops if that's true
-    if are_precise(Function, x, precision)  then
+    if is_precise(Function, x, precision)  then
       break;
     end
 
@@ -22,6 +23,7 @@ function [x, root] = newton_root(Function, x, precision, max_loop)
   end
 endfunction
 
+// Find root value with secant method
 function [x, root] = secant_root(Function, x, precision, max_loop)
   //set default value
   if ~exists('max_loop', 'local') then
@@ -32,7 +34,7 @@ function [x, root] = secant_root(Function, x, precision, max_loop)
   x1 = x + 10^-precision;
 
   for i = 1:max_loop
-    if are_precise(Function, x, precision)  then
+    if is_precise(Function, x, precision)  then
       break;
     end
 
