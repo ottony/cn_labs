@@ -1,11 +1,18 @@
+function invalid = validate(A)
+  [lines, cols] = size(A);
+
+  invalid = ( lines ~= cols )
+endfunction
+
 // Retroative method. should receive upper triangular matrix
 function x = linear(A, b)
   [lines, cols] = size(A);
 
   // validates
-  if lines ~= cols then
+  if validate(A) then
     disp('invalid!');
-    break;
+    x = 0;
+    return;
   end
 
   // each line
@@ -24,4 +31,19 @@ function x = linear(A, b)
   if A*x == b | A*x == b' then
     disp('Evething is awesome...');
   end
+endfunction
+
+function x = gauss(A, b)
+  [lin, cols] = size(A);
+
+  for diagonal = 1:lin
+    for i = (diagonal+1):cols
+      c = A(i, diagonal)/A(diagonal,diagonal);
+
+      A(i, :) = A(i, :) - c*A(diagonal, :);
+      b(i) = b(i) - c*b(diagonal);
+    end
+  end
+
+  x = linear(A,b);
 endfunction
