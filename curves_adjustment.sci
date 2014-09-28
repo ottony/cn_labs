@@ -10,7 +10,17 @@ function line = mount_polinomial_line(x, level)
   end
 endfunction
 
-function [equation, A, b] = adjust_curve(points, level)
+function e = residuo(points, equation)
+  [lin, cols] = size(points);
+  e = 0;
+  
+  for i = 1:lin
+    y = polinomial(points(i).x, equation);
+    e = e + (y - points(i).y)^2
+  end
+endfunction
+
+function [equation, e, A, b] = adjust_curve(points, level)
   [lin, cols] = size(points);
 
   for i = 1:lin
@@ -22,10 +32,11 @@ function [equation, A, b] = adjust_curve(points, level)
   b = X'*y;
 
   equation = gauss(A, b);
+  e = residuo(points, equation);
 endfunction
 
-function [equation, A, b] = adjust_curve_and_plot(points, level)
-  [equation, A, b] = adjust_curve(points, level);
+function [equation, e, A, b] = adjust_curve_and_plot(points, level)
+  [equation, e, A, b] = adjust_curve(points, level);
 
   [lin, col] = size(points);
 
