@@ -1,4 +1,4 @@
-exec('linear_iteractive.sci');
+//exec('linear_iteractive.sci');
 
 function point = new_point(x, y)
   point = struct('x', x, 'y', y);
@@ -40,6 +40,7 @@ function [equation, e, A, b] = adjust_curve_and_plot(points, level)
 
   [lin, col] = size(points);
 
+  // TODO: Remove that *** of new_point
   for i = 1:lin
     plot(points(i).x, points(i).y, 'r*')
   end
@@ -55,5 +56,59 @@ function y = polinomial(x, constants)
 
   for i = 0:(lin - 1)
     y = y + constants(i+1)*x.^i;
+  end
+endfunction
+
+function [ M, constants ] = diferences_table_newton(x, y)
+  l = length(x);
+  M = [ y ];
+
+  for i = 1:l-1
+    aux = [];
+    max = l-i;
+
+    for j = 1:max
+      delta_y   = M(i, j+1) - M(i, j);
+      detal_x   = x(j+i) - x(j);
+      aux(1, j) = delta_y /  detal_x;
+    end
+
+    aux(1, max+1:l) = 0;
+    M(i+1,:)        = aux;
+  end
+
+  M         = M';
+  constants = M(1, :);
+endfunction
+
+function [M, constants] = newton_intepolation(x, y)
+  [M, constants] = diferences_table_newton(x, y);
+  t = x(1):0.1:x(length(x));
+  h = []
+
+  for i = 1:length(x)
+    plot(x(i), y(i), 'r*');
+  end
+  for i = t
+    h(length(h) + 1) = polinomial_newton(i, constants, x)
+  end
+
+  plot(t, h);
+endfunction
+
+function y = polinomial_newton(x, constants, roots)
+  lin = length(constants);
+
+  y = 0;
+
+  for i = 0:(lin - 1)
+    // aux = constant*(x - x0)*...*(x - xn)
+    aux = constants(i+1);
+
+    for j = 1:i
+      aux = aux*(x - roots(j));
+    end
+
+    y = y + aux;
   end
 endfunction
