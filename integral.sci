@@ -1,3 +1,16 @@
+function area = trapezio(Function, a, h)
+  area = h*( (Function(a) + Function(a + h))/2 )
+endfunction
+
+function area = trapezio_compost(Function, a, b, n)
+  h = (b-a)/n;
+  area = 0;
+
+  for i = a:h:b-h
+    area = area + trapezio(Function, i, h);
+  end
+endfunction
+
 function area = simpson1_3(Function, a, h)
   area = (h/3)*(Function(a) + 4*Function(a + h) + Function(a + 2*h));
 endfunction
